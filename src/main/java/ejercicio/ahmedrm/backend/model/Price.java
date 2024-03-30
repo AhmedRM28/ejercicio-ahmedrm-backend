@@ -6,19 +6,19 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-@Table(name = "PRICES", schema = "prueba_tecnica_ahmedrm")
+@Table(name = "PRICES")
 public class Price implements Serializable {
 
     @Id
     @Column(name = "ID")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "BRAND_ID", nullable = false)
     private Brand brand;
 
-    @Column(name = "START_DATE")
+    @Column(name = "START_DATE", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date startDate;
 
@@ -29,16 +29,16 @@ public class Price implements Serializable {
     @Column(name = "PRICE_LIST")
     private Long priceList;
 
-    @Column(name = "PRODUCT_ID")
+    @Column(name = "PRODUCT_ID", nullable = false)
     private Long productId;
 
     @Column(name = "PRIORITY")
     private Long priority;
 
-    @Column(name = "PRICE")
+    @Column(name = "PRICE", length = 10, precision = 2)
     private Float price;
 
-    @Column(name = "CURR")
+    @Column(name = "CURRENCY", length = 10)
     private String currency;
 
     public Price() { }
