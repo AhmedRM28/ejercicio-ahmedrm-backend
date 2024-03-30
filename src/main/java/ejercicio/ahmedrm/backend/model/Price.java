@@ -14,8 +14,9 @@ public class Price implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @JoinColumn()
-    private Long branId;
+    @ManyToOne
+    @JoinColumn(name = "BRAND_ID", nullable = false)
+    private Brand brand;
 
     @Column(name = "START_DATE")
     @Temporal(TemporalType.TIMESTAMP)
@@ -50,12 +51,12 @@ public class Price implements Serializable {
         this.id = id;
     }
 
-    public Long getBranId() {
-        return branId;
+    public Brand getBrand() {
+        return brand;
     }
 
-    public void setBranId(Long branId) {
-        this.branId = branId;
+    public void setBrand(Brand brand) {
+        this.brand = brand;
     }
 
     public Date getStartDate() {
@@ -118,7 +119,7 @@ public class Price implements Serializable {
     public String toString() {
         return "Price{" +
                 "id=" + id +
-                ", branId=" + branId +
+                ", brandId=" + brand.getId() + " - " + brand.getName() +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
                 ", priceList=" + priceList +
