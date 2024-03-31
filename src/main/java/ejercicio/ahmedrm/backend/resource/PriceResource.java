@@ -1,5 +1,6 @@
 package ejercicio.ahmedrm.backend.resource;
 
+import ejercicio.ahmedrm.backend.exception.PriceException;
 import ejercicio.ahmedrm.backend.model.Price;
 import ejercicio.ahmedrm.backend.service.PriceService;
 import org.springframework.http.HttpStatus;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/price")
@@ -21,15 +23,29 @@ public class PriceResource {
     }
 
     @GetMapping
-    public ResponseEntity<List<Price>> getAllPrices() {
-        List<Price> prices = priceService.getAllPrices();
-        return new ResponseEntity<>(prices, HttpStatus.OK);
+    public ResponseEntity<?> getAllPrices() {
+        List<Price> prices;
+        try {
+            prices = priceService.getAllPrices();
+            return ResponseEntity.status(HttpStatus.OK).body(prices);
+        } catch (PriceException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Unhandled server error");
+        }
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Price> getPricesById(@PathVariable("id") Long priceId) {
-        Price price = priceService.getPriceById(priceId);
-        return new ResponseEntity<>(price, HttpStatus.OK);
+    public ResponseEntity<?> getPricesById(@PathVariable("id") Long priceId) {
+        Price price;
+        try {
+            price = priceService.getPriceById(priceId);
+            return new ResponseEntity<>(price, HttpStatus.OK);
+        } catch (PriceException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Unhandled server error");
+        }
     }
 
     @GetMapping("/data")
@@ -46,21 +62,41 @@ public class PriceResource {
     }
 
     @PostMapping
-    public ResponseEntity<Price> addPrice(@RequestBody Price newPrice) {
-        Price price = priceService.addPrice(newPrice);
-        return new ResponseEntity<>(price, HttpStatus.CREATED);
+    public ResponseEntity<?> addPrice(@RequestBody Price newPrice) {
+        Price price;
+        try {
+            price = priceService.addPrice(newPrice);
+            return new ResponseEntity<>(price, HttpStatus.CREATED);
+        } catch (PriceException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Unhandled server error");
+        }
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Price> updatePrice(@RequestBody Price updatedPrice) {
-        Price price = priceService.updatePrice(updatedPrice);
-        return new ResponseEntity<>(price, HttpStatus.OK);
+    public ResponseEntity<?> updatePrice(@RequestBody Price updatedPrice) {
+        Price price;
+        try {
+            price = priceService.updatePrice(updatedPrice);
+            return new ResponseEntity<>(price, HttpStatus.OK);
+        } catch (PriceException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Unhandled server error");
+        }
     }
 
    @DeleteMapping("/{id}")
     public ResponseEntity<?> deletePrice(@PathVariable("id") Long priceId) {
-        priceService.deletePrice(priceId);
-        return new ResponseEntity<>(HttpStatus.OK);
+       try {
+           priceService.deletePrice(priceId);
+           return new ResponseEntity<>(HttpStatus.OK);
+       } catch (PriceException e) {
+           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+       } catch (Exception e) {
+           return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Unhandled server error");
+       }
     }
 
 }

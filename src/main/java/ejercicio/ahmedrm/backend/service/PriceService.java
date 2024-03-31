@@ -22,7 +22,11 @@ public class PriceService {
     }
 
     public List<Price> getAllPrices() {
-        return priceRepository.findAll();
+        try {
+            return priceRepository.findAll();
+        } catch (Exception e) {
+            throw new PriceException("Error retrieving list of prices");
+        }
     }
 
     public Price getPriceById(Long priceId) {
