@@ -16,6 +16,6 @@ public class BrandService {
     }
 
     public Brand getBrandById(Long brandId) throws Exception {
-        return brandRepository.findById(brandId).orElseThrow(() -> new Exception("Error getting brand: DB might not be populated properly"));
+        return brandRepository.findById(brandId).orElseThrow(() -> new Exception("Error getting brand: Database might not be populated properly"));
     }
 }
