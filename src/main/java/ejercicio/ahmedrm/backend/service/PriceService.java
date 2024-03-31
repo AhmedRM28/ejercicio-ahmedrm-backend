@@ -6,7 +6,10 @@ import ejercicio.ahmedrm.backend.repository.PriceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class PriceService {
@@ -24,6 +27,20 @@ public class PriceService {
 
     public Price getPriceById(Long priceId) {
         return priceRepository.findById(priceId).orElseThrow(() -> new PriceException("User not found"));
+    }
+
+    public Price getPriceData(String brand, String product, String startingDate) throws PriceException {
+        try {
+            Long brandId = Objects.nonNull(brand) && !Objects.equals(brand, "") ? Long.valueOf(brand) : null;
+            Long productId = Objects.nonNull(product) && !Objects.equals(product, "") ? Long.valueOf(product) : null;
+            Date startDate = Objects.nonNull(startingDate) && !Objects.equals(startingDate, "") ?
+                    new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss").parse(startingDate) : null;
+            return priceRepository.getPriceByData(brandId, productId, startDate);
+        } catch (Exception e) {
+            throw new PriceException("Error retrieving data. " +
+                    "Please check parameters format: 'brandId' and 'productId' must be numbers. " +
+                    "'startDate' must follow '2020-01-15-15:30:00' format.");
+        }
     }
 
     public Price addPrice(Price price) throws PriceException {

@@ -32,6 +32,19 @@ public class PriceResource {
         return new ResponseEntity<>(price, HttpStatus.OK);
     }
 
+    @GetMapping("/data")
+    public ResponseEntity<?> getPriceData(@RequestParam Map<String, String> queryParams) {
+        Price price;
+        try {
+            price = priceService.getPriceData(queryParams.get("brandId"), queryParams.get("productId"), queryParams.get("startDate"));
+            return ResponseEntity.status(HttpStatus.OK).body(price);
+        } catch (PriceException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Unhandled server error");
+        }
+    }
+
     @PostMapping
     public ResponseEntity<Price> addPrice(@RequestBody Price newPrice) {
         Price price = priceService.addPrice(newPrice);
