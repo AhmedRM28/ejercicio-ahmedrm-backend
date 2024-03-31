@@ -117,9 +117,9 @@ public class Price implements Serializable {
 
     @Override
     public String toString() {
-        return "Price{" +
+        return "Price {" +
                 "id=" + id +
-                ", brandId=" + brand.getId() + " - " + brand.getName() +
+                ", brand=" + brand.getId() + " - " + brand.getName() +
                 ", startDate=" + startDate +
                 ", endDate=" + endDate +
                 ", priceList=" + priceList +
