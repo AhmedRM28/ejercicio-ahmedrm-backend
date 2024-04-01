@@ -3,6 +3,7 @@ package ejercicio.ahmedrm.backend.service;
 import ejercicio.ahmedrm.backend.exception.PriceException;
 import ejercicio.ahmedrm.backend.model.Price;
 import ejercicio.ahmedrm.backend.repository.PriceRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -63,6 +64,7 @@ public class PriceService {
         }
     }
 
+    @Transactional
     public void deletePrice(Long priceId) throws PriceException {
         try {
             priceRepository.deletePriceById(priceId);
